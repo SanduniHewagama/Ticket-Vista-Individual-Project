@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import BlurCircle from "./BlurCircle";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import toast from "react-hot-toast";
-// eslint-disable-next-line no-unused-vars
 import { useNavigate } from "react-router-dom";
 const DateSelect = ({ dateTime, id }) => {
   const [selected, setSelected] = useState(null);
 
+  const navigate = useNavigate();
+
   const onBookHandler = () => {
+
     if (!selected) {
       return toast("Please select a date");
     };
-    // eslint-disable-next-line no-undef
+   
     navigate(`/movies/${id}/${selected}`);
     scrollTo(0, 0);
   };
