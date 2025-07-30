@@ -18,7 +18,7 @@ const MovieDetails = () => {
   };
   useEffect(() => {
     getShow();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   return show ? (
@@ -54,7 +54,7 @@ const MovieDetails = () => {
               Watch Trailer
             </button>
             <a
-              href=""
+              href="#dateSelect"
               className="px-10 py-3 text-sm bg-primary hover:bg-primary-dull transition rounded-md font-medium cursor-pointer active:scale-y-95"
             >
               Buy Tickets
@@ -63,6 +63,21 @@ const MovieDetails = () => {
               <Heart className={`w-5 h-5`} />
             </button>
           </div>
+        </div>
+      </div>
+      <p>Your Favorite Cast</p>
+      <div className="overflow-x-auto no-scrollbar mt-8 pb-4">
+        <div className="flex items-center gap-4 w-max px-4">
+          {show.movie.casts.slice(0, 12).map((cast, index) => (
+            <div key={index} className="flex flex-col items-center text-center">
+              <img
+                src={cast.profile_path}
+                alt=""
+                className="rounded-full h-20 md:h-20 aspect-square object-cover"
+              />
+              <p className="font-medium text-xs mt-3">{cast.name}</p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
