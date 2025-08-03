@@ -7,6 +7,7 @@ import { dateFormat } from "../../lib/dateFormat";
 
 
 const ListShows = () => {
+  // eslint-disable-next-line no-unused-vars
   const currency = import.meta.env.VITE_CURRENCY;
 
   const [shows, setShows] = useState([]);
@@ -47,7 +48,7 @@ const ListShows = () => {
               <th className="p-2 font-medium pl-5">Show Time</th>
               <th className="p-2 font-medium pl-5">Total Bookings</th>
               <th className="p-2 font-medium pl-5">Earnings</th>
-              <th className="p-2 font-medium pl-5">Amount</th>
+              
             </tr>
           </thead>
           <tbody className="text-sm font-light">
