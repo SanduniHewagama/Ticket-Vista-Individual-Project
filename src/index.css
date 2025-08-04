@@ -3,7 +3,7 @@
 
 @theme{
     --color-primary: #F84565;
-    --color-primary-dull: #D63854;/* Dark Gray */
+    --color-primary-dull: #D63854;
 }
 
 * {
@@ -16,4 +16,16 @@ body{
     color: white;
     background-color: #09090B;
 
+}
+.no-scrollbar{
+  scrollbar-width: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+} 
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }
