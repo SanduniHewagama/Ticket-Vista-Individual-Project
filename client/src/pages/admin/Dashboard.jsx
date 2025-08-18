@@ -21,6 +21,7 @@ const Dashboard = () => {
     activeShows: [],
     totalUser: 0,
   });
+  
   const [loading, setLoading] = useState(true);
 
   const dashboardCards = [
