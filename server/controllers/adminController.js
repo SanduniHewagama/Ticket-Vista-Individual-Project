@@ -1,5 +1,9 @@
 import { populate } from "dotenv";
-import Show from "../models/Show";
+import Show from "../models/Show.js";
+import Booking from "../models/Booking.js";
+import User from "../models/User.js";
+import { clerkClient } from "@clerk/clerk-sdk-node";
+
 
 //API to check if user is admin
 export const isAdmin = async (req, res) => {
@@ -22,7 +26,7 @@ export const getDashboardData = async (req, res) => {
       activeShows,
       totalUser,
     };
-    res.json({ success: true, data: dashboardData });
+    res.json({ success: true, dashboardData });
   } catch (error) {
     console.error(error);
     res.json({ success: false, message: error.message });
@@ -44,17 +48,20 @@ export const getAllShows = async (req, res) => {
 
 //API to get all bookings
 export const getAllBookings = async (req, res) => {
-    try {
-        const bookings = await Booking.find({}).populate('user').populate({
-            path: 'show',
-            populate: {
-                path: 'movie',
-                populate: {path: "movie"}
-            }
-        }).sort({ createdAt: -1 })
-        res.json({ success: true, bookings })
-    } catch (error) {
-        console.error(error);
-        res.json({ success: false, message: error.message })
-    }
-}
+  try {
+    const bookings = await Booking.find({})
+      .populate("user")
+      .populate({
+        path: "show",
+        populate: {
+          path: "movie",
+          populate: { path: "movie" },
+        },
+      })
+      .sort({ createdAt: -1 });
+    res.json({ success: true, bookings });
+  } catch (error) {
+    console.error(error);
+    res.json({ success: false, message: error.message });
+  }
+};

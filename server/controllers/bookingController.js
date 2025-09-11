@@ -1,5 +1,9 @@
+import Show from "../models/Show.js";
+import Booking from "../models/Booking.js";
+
+
 //Function to check availability of selected seats for a movie
-const checkSeatAvailability = async (showId, selectedSeats) => {
+const checkSeatsAvailability = async (showId, selectedSeats) => {
   try {
     const showData = await Show.findById(showId);
     if (!showData) return false;
@@ -20,7 +24,7 @@ export const createBooking = async (req, res) => {
     const { showId, selectedSeats } = req.body;
     const { origin } = req.headers;
 
-    const isAvailable = await checkSeatAvailability(showId, selectedSeats);
+    const isAvailable = await checkSeatsAvailability(showId, selectedSeats);
 
     if (!isAvailable) {
       return res.json({
@@ -36,18 +40,18 @@ export const createBooking = async (req, res) => {
       user: userId,
       show: showId,
       amount: showData.showPrice * selectedSeats.length,
-      bookedSeats: selectedSeats
-    })
+      bookedSeats: selectedSeats,
+    });
+    //Mark the seats as occupied
     selectedSeats.map((seat) => {
-        showData.occupiedSeats[seat] = userId;
-    })
+      showData.occupiedSeats[seat] = userId;
+    });
 
-    showData.markModified('occupiedSeats');
+    showData.markModified("occupiedSeats");
 
     await showData.save();
 
-    res.json({ success: true, message: 'Booked successfully' })
-
+    res.json({ success: true, message: "Booked successfully" });
   } catch (error) {
     console.log(error.message);
     res.json({ success: false, message: error.message });
@@ -55,16 +59,14 @@ export const createBooking = async (req, res) => {
 };
 
 export const getOccupiedSeats = async (req, res) => {
-    try {
+  try {
+    const { showId } = req.params;
+    const showData = await Show.findById(showId);
 
-        const { showId } = req.params;
-        const showData = await Show.findById(showId);
-
-        const occupiedSeats = Object.keys(showData.occupiedSeats);
-        res.json({ success: true, occupiedSeats });
-    }
-    catch (error) {
-        console.log(error.message);
-        res.json({ success: false, message: error.message });
-    }
+    const occupiedSeats = Object.keys(showData.occupiedSeats);
+    res.json({ success: true, occupiedSeats });
+  } catch (error) {
+    console.log(error.message);
+    res.json({ success: false, message: error.message });
+  }
 };

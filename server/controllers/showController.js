@@ -1,6 +1,8 @@
 import axios from "axios";
 import Movie from "../models/Movie.js";
 import Show from "../models/Show.js";
+import Booking from "../models/Booking.js";
+
 
 export const getNowPlayingMovies = async (req, res) => {
   try {
@@ -68,15 +70,15 @@ export const addShow = async (req, res) => {
           showDateTime: new Date(dateTimeString),
           showPrice,
           occupiedSeats: {},
-        })
-      })
+        });
+      });
     });
 
     if (showsToCreate.length > 0) {
       // Create shows in the database
       await Show.insertMany(showsToCreate);
     }
-    res.json({ success: true, message: "Show Added successfully." })
+    res.json({ success: true, message: "Show Added successfully." });
   } catch (error) {
     console.error(error);
     res.json({ success: false, message: error.message });
@@ -87,12 +89,13 @@ export const addShow = async (req, res) => {
 export const getShows = async (req, res) => {
   try {
     const shows = await Show.find({
-      showDateTime: {$gte: new Date()}})
-      .populate('movie') 
-      .sort({ showDateTime: 1 });  
+      showDateTime: { $gte: new Date() }
+    })
+      .populate('movie')
+      .sort({ showDateTime: 1 });
 
-    //filter unique shows 
-    const uniqueShows = new Set(shows.map((show) => show.movie));
+    //filter unique shows
+    const uniqueShows = new Set(shows.map(show => show.movie));
 
     res.json({ success: true, shows: Array.from(uniqueShows) });
   } catch (error) {
@@ -119,12 +122,12 @@ export const getShow = async (req, res) => {
       if (!dateTime[date]) {
         dateTime[date] = []
       }
-      dateTime[date].push({ time: show.showDateTime, showId: show._id })
+      dateTime[date].push({ time: show.showDateTime, showId: show._id });
     });
 
-    res.json({ success: true, movie, dateTime })
+    res.json({ success: true, movie, dateTime });
   } catch (error) {
     console.error(error);
-    res.json({ success: false, message: error.message })
+    res.json({ success: false, message: error.message });
   }
 };
