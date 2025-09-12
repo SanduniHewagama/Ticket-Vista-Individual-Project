@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { dummyShowsData } from '../../assets/assets';
 import Title from "../../components/admin/Title";
 import { CheckIcon, DeleteIcon, StarIcon } from 'lucide-react';
 import Loading from '../../components/Loading';
 import { kConverter } from '../../lib/kConverter';
+import { useAppContext } from '../../context/AppContext';
+
+
 
 
 const AddShows = () => {
+
+    // eslint-disable-next-line no-unused-vars
+    const {axios, getToken, user} = useAppContext()
 
    const currency = import.meta.env.VITE_CURRENCY;
    const [nowPlayingMovies, setNowPlayingMovies] = useState([]);
@@ -16,7 +21,16 @@ const AddShows = () => {
    const [showPrice ,setShowPrice] = useState("");
 
    const fetchNowPlayingMovies = async () => {
-    setNowPlayingMovies(dummyShowsData);
+    try {
+        const { data } = await axios.get("/api/show/now-playing", {
+            headers: { Authorization: `Bearer ${await getToken()}` }
+        })
+        if(data.success) {
+            setNowPlayingMovies(data.movies)
+    }
+    } catch (error) {
+        console.error('Error fetching movies:',error);
+    }
    };  
 
    const handleDateTimeAdd = () => {
@@ -49,6 +63,7 @@ const AddShows = () => {
    
    useEffect(() => {
     fetchNowPlayingMovies();
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    },[]
    );
 

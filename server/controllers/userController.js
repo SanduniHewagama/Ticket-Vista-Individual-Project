@@ -23,7 +23,7 @@ export const getUserBookings = async (req, res) => {
     }
 }
 
-//API Controller function to add favourite movie in clerk user metadata
+//API Controller function to update favourite movie in clerk user metadata
 export const updateFavourite = async (req, res) => {
     try {
         const { movieId } = req.body;
@@ -36,7 +36,7 @@ export const updateFavourite = async (req, res) => {
 
         } 
 
-        if(user.privateMetadata.favourites.includes(movieId)){
+        if(!user.privateMetadata.favourites.includes(movieId)){
             user.privateMetadata.favourites.push(movieId)
         }else{ 
             user.privateMetadata.favourites = user.privateMetadata.favourites.filter(item => item !== movieId)
@@ -53,7 +53,7 @@ export const updateFavourite = async (req, res) => {
 export const getFavourites = async (req, res) => {
     try {
         const user = await clerkClient.users.getUser(req.auth().userId);
-        const getUser = user.privateMetadata.favourites;
+        const favourites = user.privateMetadata.favourites;
 
         //Getting movies from database
         const movies = await Movie.find({_id: {$in: favourites}})

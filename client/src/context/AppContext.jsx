@@ -4,7 +4,7 @@ import { useAuth, useUser } from "@clerk/clerk-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const AppContext = createContext();
 
@@ -23,6 +23,7 @@ export const AppProvider = ({ children }) => {
       const { data } = await axios.get("/api/admin/is-admin", {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
+      console.log(data);
       setIsAdmin(data.isAdmin);
 
       if (!data.isAdmin && location.pathname.startsWith("/admin")) {

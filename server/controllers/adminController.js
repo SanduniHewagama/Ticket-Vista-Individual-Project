@@ -2,7 +2,7 @@ import { populate } from "dotenv";
 import Show from "../models/Show.js";
 import Booking from "../models/Booking.js";
 import User from "../models/User.js";
-import { clerkClient } from "@clerk/clerk-sdk-node";
+import { clerkClient } from "@clerk/clerk-sdk-node"; 
 
 
 //API to check if user is admin
