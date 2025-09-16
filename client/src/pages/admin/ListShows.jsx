@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useAppContext } from "../../context/appContext";
+import { useAppContext } from '../../context/AppContext';
 import Loading from "../../components/Loading";
 import Title from "../../components/admin/Title";
 import { dateFormat } from "../../lib/dateFormat";
 
 const ListShows = () => {
+
+  // eslint-disable-next-line no-unused-vars
   const currency = import.meta.env.VITE_CURRENCY;
 
   const { axios, getToken, user } = useAppContext();
@@ -12,6 +14,7 @@ const ListShows = () => {
   const [shows, setShows] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getAllShows = async () => {
     try {
       const { data } = await axios.get("/api/admin/all-shows", {
@@ -25,12 +28,15 @@ const ListShows = () => {
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      getAllShows();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+ useEffect(() => {
+  if (user) {
+    const fetchData = async () => {
+      await getAllShows();
+    };
+    fetchData();
+  }
+}, [user, getAllShows]);
+
 
   return !loading ? (
     <>

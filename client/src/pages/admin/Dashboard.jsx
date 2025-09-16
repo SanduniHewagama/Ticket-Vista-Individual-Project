@@ -11,7 +11,7 @@ import Title from "../../components/admin/Title";
 import BlurCircle from "../../components/BlurCircle";
 import { dateFormat } from "../../lib/dateFormat";
 import { toast } from "react-hot-toast";
-import { useAppContext } from "../../context/appContext";
+import { useAppContext } from "../../context/AppContext";
 
 const Dashboard = () => {
 
@@ -51,6 +51,7 @@ const Dashboard = () => {
     },
   ];
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchDashboardData = async () => {
     try {
       const { data } = await axios.get("/api/admin/dashboard", {
@@ -68,14 +69,16 @@ const Dashboard = () => {
   
   };
 
-  useEffect(() => {
-    if(user){
-      
-      fetchDashboardData();
-    }
-    
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+useEffect(() => {
+  if (user) {
+    const loadDashboard = async () => {
+      await fetchDashboardData();
+    };
+
+    loadDashboard();
+  }
+}, [user, fetchDashboardData]);
+
 
   return !loading ? (
     <>

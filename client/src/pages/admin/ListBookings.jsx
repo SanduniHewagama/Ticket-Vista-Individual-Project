@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { dateFormat } from "../../lib/dateFormat";
 import Loading from "../../components/Loading";
-import Title from "../../components/admin/Title";
-import { useAppContext } from "../../context/appContext";
+import Title from "../../components/admin/Title.JSX";
+import { useAppContext } from "../../context/AppContext";
 
 const ListBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY;
@@ -11,6 +11,7 @@ const ListBookings = () => {
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getAllBookings = async () => {
     try {
       const { data } = await axios.get("/api/admin/all-bookings", {
@@ -21,14 +22,17 @@ const ListBookings = () => {
     } catch (error) {
       console.error(error);
     }
-    setIsLoading(false);
+    setIsLoading(false)
   };
 
-  useEffect(() => {
-    if (user) {
-      getAllBookings();
-    }
-  }, [user]);
+useEffect(() => {
+  if (user) {
+    const fetchData = async () => {
+      await getAllBookings();
+    };
+    fetchData();
+  }
+}, [user, getAllBookings]);
 
   return !isLoading ? (
     <>

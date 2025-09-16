@@ -13,7 +13,8 @@ const Layout = () => {
     console.log("checking admin");
     fetchIsAdmin();
     console.log(isAdmin);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+   
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return isAdmin ? (

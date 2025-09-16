@@ -22,10 +22,16 @@ const MovieDetails = () => {
       });
     }
   };
-  useEffect(() => {
-    getShow();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+useEffect(() => {
+  const fetchData = async () => {
+    await getShow(); 
+  };
+
+  fetchData();
+
+// eslint-disable-next-line react-hooks/exhaustive-deps
+}, [id]);
+
 
   return show ? (
     <div className="px-6 md:px-16 lg-px-40 pt-30 md:pt-50">

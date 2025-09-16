@@ -97,10 +97,9 @@ const AddShows = () => {
   useEffect(() => {
     if (user) {
       fetchNowPlayingMovies();
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+    }})
 
+  
   return nowPlayingMovies.length > 0 ? (
     <>
       <Title text1="Add" text2="Shows" />
@@ -209,6 +208,6 @@ const AddShows = () => {
   ) : (
     <Loading />
   );
-};
+}
 
 export default AddShows;

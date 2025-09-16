@@ -66,13 +66,18 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      fetchIsAdmin();
-      fetchFavouriteMovies();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+useEffect(() => {
+  // Always fetch shows when app starts
+  fetchShows();
+
+  // If user exists, fetch user-related data
+  if (user) {
+    fetchIsAdmin();
+    fetchFavouriteMovies();
+  }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [user]);
+
 
   const value = {
     axios,
