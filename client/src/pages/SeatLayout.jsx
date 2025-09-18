@@ -25,6 +25,7 @@ const SeatLayout = () => {
   const [show, setShow] = useState(null);
   
 
+  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
 
   const { axios, getToken, user } = useAppContext();
@@ -111,8 +112,8 @@ const SeatLayout = () => {
       );
 
       if (data.success) {
-        toast.success(data.message);
-        navigate("/my-bookings");
+        window.location.href = data.url;
+
       } else {
         toast.error(data.message);
       }
