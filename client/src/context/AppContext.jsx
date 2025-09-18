@@ -9,7 +9,6 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
-
   const [isAdmin, setIsAdmin] = useState(false);
   const [shows, setShows] = useState([]);
   const [favoriteMovies, setFavoriteMovies] = useState([]);
@@ -51,9 +50,9 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const fetchFavouriteMovies = async () => {
+  const fetchFavoriteMovies = async () => {
     try {
-      const { data } = await axios.get("/api/user/favourites", {
+      const { data } = await axios.get("/api/user/favorites", {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
       if (data.success) {
@@ -66,18 +65,17 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-useEffect(() => {
-  // Always fetch shows when app starts
-  fetchShows();
+  useEffect(() => {
+    // Always fetch shows when app starts
+    fetchShows();
 
-  // If user exists, fetch user-related data
-  if (user) {
-    fetchIsAdmin();
-    fetchFavouriteMovies();
-  }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [user]);
-
+    // If user exists, fetch user-related data
+    if (user) {
+      fetchIsAdmin();
+      fetchFavoriteMovies();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const value = {
     axios,
@@ -89,8 +87,8 @@ useEffect(() => {
     isAdmin,
     shows,
     favoriteMovies,
-    fetchFavouriteMovies,
-    image_base_url
+    fetchFavoriteMovies,
+    image_base_url,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

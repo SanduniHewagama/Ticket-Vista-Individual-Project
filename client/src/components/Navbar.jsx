@@ -33,7 +33,7 @@ const Navbar = () => {
           onClick={() => {
             scrollTo(0, 0), setIsOpen(false);
           }}
-          to="/"
+          to='/'
         >
           Home
         </Link>
@@ -41,7 +41,7 @@ const Navbar = () => {
           onClick={() => {
             scrollTo(0, 0), setIsOpen(false);
           }}
-          to="/movies"
+          to='/movies'
         >
           Movies
         </Link>
@@ -49,7 +49,7 @@ const Navbar = () => {
           onClick={() => {
             scrollTo(0, 0), setIsOpen(false);
           }}
-          to="/"
+          to='/'
         >
           Theaters
         </Link>
@@ -57,7 +57,7 @@ const Navbar = () => {
           onClick={() => {
             scrollTo(0, 0), setIsOpen(false);
           }}
-          to="/"
+          to='/'
         >
           Releases
         </Link>
@@ -66,7 +66,7 @@ const Navbar = () => {
             onClick={() => {
               scrollTo(0, 0), setIsOpen(false);
             }}
-            to="/favorites"
+            to='/favorites'
           >
             Favorites
           </Link>
