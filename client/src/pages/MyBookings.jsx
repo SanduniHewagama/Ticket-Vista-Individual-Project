@@ -111,7 +111,7 @@ const MyBookings = () => {
             </div>
           </div>
         </div>
-      ))}
+      ))}   
     </div>
   ) : (
     <Loading />
