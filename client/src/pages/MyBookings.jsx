@@ -4,6 +4,8 @@ import BlurCircle from "../components/BlurCircle";
 import { dateFormat } from "../lib/dateFormat";
 import timeFormat from "../lib/TimeFormat";
 import { useAppContext } from "../context/AppContext";
+import { Link } from "react-router-dom";
+
 
 const MyBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY;
@@ -34,8 +36,13 @@ const MyBookings = () => {
       };
       fetchBookings();
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  useEffect(() => {
+  console.log("Bookings data:", bookings);
+}, [bookings]);
+
 
   return !isLoading ? (
     <div className="relative px-6 md:px-16 lg:px-40 pt-30 md:pt-40 min-h-[80vh]">
@@ -73,10 +80,15 @@ const MyBookings = () => {
                 {currency}
                 {index.amount}
               </p>
-              {!index.isPaid && (
-                <button className="bg-primary px-4 py-1.5 mb-3 text-sm rounded-full font-medium cursor-pointer">
+              {index.isPaid === false ? (
+                <Link
+                  to={index.paymentLink}
+                  className="bg-primary px-4 py-1.5 mb-3 text-sm rounded-full font-medium cursor-pointer"
+                >
                   Pay Now
-                </button>
+                </Link>
+              ) : (
+                <span className="text-green-500 text-sm font-medium">Paid</span>
               )}
             </div>
             <div className="text-sm">
