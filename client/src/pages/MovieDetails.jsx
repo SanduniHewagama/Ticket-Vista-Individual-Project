@@ -14,7 +14,7 @@ const MovieDetails = () => {
   const { id } = useParams();
   const [show, setShow] = useState(null);
 
-  const {
+  const {   
     shows,
     axios,
     getToken,
