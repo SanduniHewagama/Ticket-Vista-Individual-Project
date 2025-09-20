@@ -6,8 +6,6 @@ import timeFormat from "../lib/TimeFormat";
 import { useAppContext } from "../context/AppContext";
 import { Link } from "react-router-dom";
 
-
-
 const MyBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY;
 
@@ -22,12 +20,21 @@ const MyBookings = () => {
         headers: { Authorization: `Bearer ${await getToken()}` },
       });
       if (data.success) {
+        console.log(
+          "Booking payment status:",
+          data.bookings.map((b) => ({
+            id: b._id,
+            isPaid: b.isPaid,
+            paymentStatus: b.paymentStatus,
+          }))
+        );
         setBookings(data.bookings);
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -61,7 +68,9 @@ const MyBookings = () => {
               className="md:max-w-45 aspect-video h-auto object-cover object-bottom rounded"
             />
             <div className="flex flex-col p-4">
-              <p className="text-lg font-semibold">{booking.show.movie.title}</p>
+              <p className="text-lg font-semibold">
+                {booking.show.movie.title}
+              </p>
               <p className="text-gray-400 text-sm">
                 {timeFormat(booking.show.movie.runtime)}
               </p>
@@ -77,17 +86,19 @@ const MyBookings = () => {
                 {currency}
                 {booking.amount}
               </p>
-              {booking.isPaid === false ? (
+              {!booking.isPaid && booking.paymentStatus !== "completed" && (
                 <Link
                   to={booking.paymentLink}
-                  className="bg-primary px-4 py-1.5 mb-3 text-sm rounded-full font-medium cursor-pointer"
+                  className="bg-primary px-4 py-1.5 mb-3 text-sm rounded-full font-medium cursor-pointer hover:bg-primary/90 transition-colors"
                 >
                   Pay Now
                 </Link>
-              ) : (
+              )}
+              {(booking.isPaid || booking.paymentStatus === "completed") && (
                 <span className="text-green-500 text-sm font-medium">Paid</span>
               )}
             </div>
+
             <div className="text-sm">
               <p>
                 <span className="text-gray-400">Total Tickets:</span>{" "}
