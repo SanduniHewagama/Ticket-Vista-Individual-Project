@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import Booking from "../models/Booking.js";
 import Show from "../models/Show.js";
 import sendEmail from "../configs/nodeMailer.js";
+import "dotenv/config";
 
 
 // Create a client to send and receive events
@@ -10,7 +11,7 @@ export const inngest = new Inngest({ id: "movie-ticket-booking" });
 
 
 // Inngest Function to save user data to a database
-// ...existing code...
+
 const syncUserCreation = inngest.createFunction(
     { id: 'sync-user-from-clerk'},
     { event: 'clerk/user.created' },
@@ -115,7 +116,7 @@ const sendBookingConfirmationEmail = inngest.createFunction(
             <p>Enjoy the show! </p>
             <p>Thanks for choosing us!<br/> Ticket Vista Team </p>
             
-            </div> `
+            </div>`
         })
     }
 
