@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Loading from "../components/Loading";
 import BlurCircle from "../components/BlurCircle";
 import { dateFormat } from "../lib/dateFormat";
-import timeFormat from "../lib/TimeFormat";
+import timeFormat from "../lib/timeFormat.js";
 import { useAppContext } from "../context/AppContext";
 import { Link } from "react-router-dom";
 

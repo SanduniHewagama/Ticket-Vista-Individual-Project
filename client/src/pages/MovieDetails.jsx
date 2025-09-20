@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import BlurCircle from "../components/BlurCircle";
 import { Play, Heart, PlayCircleIcon, StarIcon } from "lucide-react";
-import timeFormat from "../lib/TimeFormat";
+import timeFormat from "../lib/timeFormat.js";
 import DateSelect from "../components/DateSelect";
 import MovieCard from "../components/MovieCard";
 import Loading from "../components/Loading";
