@@ -2,6 +2,7 @@ import axios from "axios";
 import Movie from "../models/Movie.js";
 import Show from "../models/Show.js";
 import Booking from "../models/Booking.js";
+import { inngest } from "../inngest/index.js";
 
 
 export const getNowPlayingMovies = async (req, res) => {
@@ -78,6 +79,14 @@ export const addShow = async (req, res) => {
       // Create shows in the database
       await Show.insertMany(showsToCreate);
     }
+
+    //Trigger Inngest  event
+     await inngest.send({
+      name: "app/show.added",
+      data: {movieTitle: movie.title}
+
+    });
+
     res.json({ success: true, message: "Show Added successfully." });
   } catch (error) {
     console.error(error);
@@ -85,7 +94,7 @@ export const addShow = async (req, res) => {
   }
 };
 
-//API to get al shows from the db
+//API to get all shows from the db
 export const getShows = async (req, res) => {
   try {
     const shows = await Show.find({
