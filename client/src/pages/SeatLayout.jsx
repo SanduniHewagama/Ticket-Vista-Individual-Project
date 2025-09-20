@@ -2,7 +2,7 @@ import { ClockIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../components/Loading";
-import isoTimeFormat from "../lib/isoTimeFormat";
+import isoTimeFormat from "../lib/isoTimeFormat.js";
 import BlurCircle from "../components/BlurCircle";
 import toast from "react-hot-toast";
 import { ArrowRightIcon } from "lucide-react";

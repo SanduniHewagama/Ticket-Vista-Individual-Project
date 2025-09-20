@@ -1,9 +1,10 @@
-import stripe from "stripe";
+import Stripe from "stripe";
 import Booking from "../models/Booking.js";
 import { inngest } from "../inngest/index.js";
+import "dotenv/config";
 
 export const stripeWebhooks = async (request, response) => {
-  const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY);
+  const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY);
   const sig = request.headers["stripe-signature"];
 
   let event;
@@ -15,7 +16,7 @@ export const stripeWebhooks = async (request, response) => {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (error) {
-    return Response.status(400).send(`Webhook Error: ${error.message}`);
+    return response.status(400).send(`Webhook Error: ${error.message}`);
   }
 
   try {
@@ -38,7 +39,8 @@ export const stripeWebhooks = async (request, response) => {
         await inngest.send({
           name: "app/show.booked",
           data: { bookingId },
-        });
+        })
+
         break;
       }
       default:

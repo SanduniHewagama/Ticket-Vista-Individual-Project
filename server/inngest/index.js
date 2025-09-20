@@ -3,6 +3,7 @@ import User from "../models/User.js";
 import Booking from "../models/Booking.js";
 import Show from "../models/Show.js";
 import sendEmail from "../configs/nodeMailer.js";
+import "dotenv/config";
 
 
 // Create a client to send and receive events
@@ -10,7 +11,7 @@ export const inngest = new Inngest({ id: "movie-ticket-booking" });
 
 
 // Inngest Function to save user data to a database
-// ...existing code...
+
 const syncUserCreation = inngest.createFunction(
     { id: 'sync-user-from-clerk'},
     { event: 'clerk/user.created' },
@@ -90,36 +91,55 @@ const releaseSeatsAndDeleteBooking = inngest.createFunction(
 //Inngest function to send email when user books a show
 
 const sendBookingConfirmationEmail = inngest.createFunction(
-    {id: "send-booking-confirmation-email"},
-    {event: "app/show.booked"},
-    async ({ event, step })=>{
-        const { bookingId } = event.data;
-         
-        const booking = await Booking.findById(bookingId).populate({
-            path: 'show',
-            populate: { path: "movie", model: "Movie" }
-        }).populate('user');
+  { id: "send-booking-confirmation-email" },
+  { event: "app/show.booked" },
+  async ({ event, step }) => {
+    const { bookingId } = event.data;
 
-        await sendEmail({
-            to: booking.user.email,
-            subject: `Payment Confirmation: "${booking.show.movie.title}" booked!`,
-            body:` <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-            <h2>Hi ${booking.user.name},</h2>
-            <p>Your booking for <strong style="color: #F84565;">"${booking.show.movie.title}"</strong> has been successfully confirmed!</p>
+    const booking = await Booking.findById(bookingId)
+      .populate({
+        path: "show",
+        populate: { path: "movie", model: "Movie" },
+      })
+      .populate("user");
 
-            <p>
-            <strong>Date:</strong> ${new Date(booking.show.showDateTime).toLocaleDateString('en-US', { timeZone:'Asia/Kolkata' })} <br/>
-            <strong>Time:</strong> ${new Date(booking.show.showDateTime).toLocaleTimeString('en-US', { timeZone: 'Asia/Kolkata' })}
-
-            </p>
-            <p>Enjoy the show! </p>
-            <p>Thanks for choosing us!<br/> Ticket Vista Team </p>
-            
-            </div> `
-        })
+    // Guard: booking not found
+    if (!booking) {
+      console.warn(`Booking not found: ${bookingId}`);
+      return;
     }
 
+    // Guard: booking.user missing
+    if (!booking.user) {
+      console.warn(`User not found for booking: ${bookingId}`);
+      return;
+    }
+
+    // Guard: booking.show or booking.show.movie missing
+    if (!booking.show || !booking.show.movie) {
+      console.warn(`Show or movie missing for booking: ${bookingId}`);
+      return;
+    }
+
+    await sendEmail({
+      to: booking.user.email,
+      subject: `Payment Confirmation: "${booking.show.movie.title}" booked!`,
+      body: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+          <h2>Hi ${booking.user.name},</h2>
+          <p>Your booking for <strong style="color: #F84565;">"${booking.show.movie.title}"</strong> has been successfully confirmed!</p>
+          <p>
+            <strong>Date:</strong> ${new Date(booking.show.showDateTime).toLocaleDateString("en-US", { timeZone: "Asia/Kolkata" })} <br/>
+            <strong>Time:</strong> ${new Date(booking.show.showDateTime).toLocaleTimeString("en-US", { timeZone: "Asia/Kolkata" })}
+          </p>
+          <p>Enjoy the show!</p>
+          <p>Thanks for choosing us!<br/> Ticket Vista Team </p>
+        </div>
+      `,
+    });
+  }
 );
+
 
 //Inngest Fuction to send reminders
 const sendShowReminders = inngest.createFunction(
